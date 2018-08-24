@@ -1,0 +1,71 @@
+{
+	"section": [{
+			"heroPosition": {
+				"x": 100,
+				"y": 150
+			},
+			"enemyPositon": [{
+					"x": 600,
+					"y": 300
+				},
+				{
+					"x": 300,
+					"y": 400
+				},
+				{
+					"x": 500,
+					"y": 150
+				}
+			],
+			"heroHealth": 3,
+			"name": "Steppe",
+			"enemyCanShoot": true,
+			"enemyCount": 2,
+			"isClear": true
+		},
+		{
+			"heroPosition": {
+				"x": 200,
+				"y": 110
+			},
+			"enemyPositon": [{
+					"x": 600,
+					"y": 280
+				},
+				{
+					"x": 550,
+					"y": 200
+				},
+				{
+					"x": 300,
+					"y": 220
+				}
+			],
+			"heroHealth": 1,
+			"name": "Palace",
+			"enemyCanShoot": false,
+			"enemyCount": 2,
+			"isClear": false
+		},
+		{
+			"heroPosition": {
+				"x": 350,
+				"y": 250
+			},
+			"enemyPositon": [{
+					"x": 800,
+					"y": 400
+				},
+				{
+					"x": 100,
+					"y": 300
+				}
+			],
+			"heroHealth": 2,
+			"name": "Forest",
+			"enemyCanShoot": true,
+			"enemyCount": 2,
+			"isClear": false
+		}
+	]
+}

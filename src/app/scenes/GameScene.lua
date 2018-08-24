@@ -1,0 +1,53 @@
+local GameScene = class("GameScene", function() 
+		return display.newPhysicsScene("GameScene") 
+end) 
+local UILayer = require("app.layers.UILayer")
+local GameLayer = require("app.layers.GameLayer")
+local EventManager = require("app.table.EventManager")
+local MapManager = require("app.table.MapManager")
+local PhysicsSystem = require("app.table.PhysicsSystem")
+local EndScene = require("app.scenes.EndScene")
+local ClearScene = require("app.scenes.ClearScene")
+
+function GameScene:ctor(section)
+	self.section = section
+	self:getPhysicsWorld():setGravity(display.zeroPoint)
+	PhysicsSystem.registerContactHandler()
+	self.gameLayer = GameLayer.new(self.section)
+	self:addChild(self.gameLayer, 2)
+	self.uiLayer = UILayer.new()
+	self.uiLayer:setControlGame(self.gameLayer)
+	self:addChild(self.uiLayer, 3)
+	self:preloadStart()
+	EventManager:EventRegister("gameEnd", function() 
+		local endScene = EndScene.new(self.section)
+		display.replaceScene(endScene, "fade", 0.5, cc.c3b(0, 0, 0))		
+	end)
+	EventManager:EventRegister("gameClear", function() 
+		local clearScene = ClearScene.new(self.section)
+		display.replaceScene(clearScene, "fade", 0.5, cc.c3b(0, 0, 0))
+	end)
+end
+
+function GameScene:preloadStart()
+	local spPreStart = display.newSprite("image/prestart.png")
+	spPreStart:pos(display.cx, display.cy)
+	spPreStart:setScale(0.1)
+	local act1 = cc.ScaleBy:create(0.8, 2)
+	local act2 = cc.ScaleBy:create(0.8, 0.8)
+	local func = cc.CallFunc:create(function() 
+		EventManager:Dispatch("completed")
+		spPreStart:removeSelf()
+		self.uiLayer:connectGame()
+	end)
+	spPreStart:runAction(cc.Sequence:create(act1, act2, func))
+	self:addChild(spPreStart, 10)
+end
+
+function GameScene:onExit()
+	self.gameLayer.hero:destroy()
+	EventManager:removeAllListeners()
+	MapManager.releaseMap(self.gameLayer.tiledMap)
+end
+
+return GameScene
